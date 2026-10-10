@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goxer | Профессиональный Тренер</title>
     <style>
+        *, *::before, *::after { box-sizing: border-box; }
         :root { --primary: #ff416c; --secondary: #4caf50; --xp-color: #00d2ff; }
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -18,7 +19,7 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             padding: 30px; border-radius: 30px;
-            text-align: center; width: 350px;
+            text-align: center; width: min(100%, 412px);
             border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
@@ -53,7 +54,7 @@
         .diet-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px; padding: 20px;
-            width: 350px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.1);
+            width: min(100%, 392px); margin-top: 20px; border: 1px solid rgba(255,255,255,0.1);
         }
 
         #instruction {
@@ -72,8 +73,8 @@
         <div id="avatar">⚡</div>
         <h1>Goxer</h1>
         
-        <div class="xp-container"><div id="xp-bar"></div></div>
-        <p id="task" style="font-size: 1.2rem; margin: 10px 0;">Готов стать сильнее?</p>
+        <div id="xp-progress" class="xp-container" role="progressbar" aria-label="Опыт до следующего уровня" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="xp-bar"></div></div>
+        <p id="task" aria-live="polite" aria-atomic="true" style="font-size: 1.2rem; margin: 10px 0;">Готов стать сильнее?</p>
         
         <div id="timer">00</div>
         <button id="mainBtn" onclick="startWorkout()">СТАРТ</button>
@@ -124,6 +125,7 @@
             
             let progress = xp % 100;
             document.getElementById('xp-bar').style.width = progress + "%";
+            document.getElementById('xp-progress').setAttribute('aria-valuenow', progress);
         }
 
         function runTimer(sec, callback) {
@@ -180,6 +182,7 @@
             avatar.innerText = ex.icon;
             instructionDisplay.innerText = ex.hint;
             timerDisplay.style.color = "#ffeb3b";
+            btn.innerText = "ТРЕНИРОВКА";
             
             runTimer(ex.time, () => {
                 xp += 25;
@@ -199,6 +202,7 @@
             avatar.innerText = "🍵";
             instructionDisplay.innerText = "Глубоко дыши через нос, выдыхай через рот.";
             timerDisplay.style.color = "#4caf50";
+            btn.innerText = "ОТДЫХ";
             
             runTimer(20, () => {
                 timerDisplay.style.color = "#ffeb3b";
